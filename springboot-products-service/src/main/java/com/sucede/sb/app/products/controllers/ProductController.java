@@ -35,10 +35,23 @@ public class ProductController {
 	}
 	
 	@GetMapping("/view/{id}")
-	public Product product(@PathVariable Long id) {
+	public Product product(@PathVariable Long id) throws Exception {
 		Product product = productService.findById(id);
 		//product.setPort(Integer.parseInt(env.getProperty("local.server.port")));
 		product.setPort(port);
+		
+		/* Prueba de tolerancia a fallos de Hystrix
+		 * Generamos una excepción siempre que se llame al método
+		 * para después recogerla desde el controller del servicio Item
+		 * del otro proyecto*/
+		/*
+		boolean ok = false;
+		
+		if (!ok) {
+			throw new Exception("No se pudo obtener el producto");
+		}
+		*/
+		
 		return product;
 	}
 }
